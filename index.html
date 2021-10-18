@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+    <title>Home</title>
+
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: poppins;
+    }
+
+    body {
+        background-color: #ffffff;
+        color: #ffffff;
+    }
+
+
+    header {
+        /* background-color: rgb(184, 220, 255); */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+    }
+
+    button {
+        border: 2px solid #E50914;
+        ;
+        padding: 10px 24px;
+        background-color: #E50914;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        color: white;
+    }
+
+    button:hover {
+        background-color: #a5060e;
+        color: white;
+    }
+
+    .header-right {
+        display: flex;
+        gap: 20px;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .header-right>input {
+        padding: 11px;
+        font-size: 16px;
+        border: none;
+        border-bottom: 2px solid #c9cacc;
+        color: black;
+        outline: none;
+        fill: none;
+        background: transparent;
+    }
+
+    .header-left {
+        font-size: 24px;
+        font-weight: 700;
+        color: #E50914;
+        letter-spacing: 1px;
+        cursor: pointer;
+        border: 1px solid #E50914;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+
+    .movies-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 40px;
+        margin: 20px;
+    }
+
+    .movie {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        gap: 8px;
+    }
+
+    .movie>p {
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .movie>img {
+        width: 100%;
+    }
+
+    .carousel-parent {
+        overflow: hidden;
+        width: 70.5%;
+        margin: auto;
+    }
+
+    .carousel-container {
+        display: flex;
+        height: 50%;
+        transform: translateX(0);
+        transition: transform 0.5s linear;
+    }
+
+    .carousel-item {
+        flex-shrink: 0;
+        width: 100%;
+    }
+
+    .result {
+        display: flex;
+        width: 50%;
+        margin: auto;
+        gap: 32px;
+        /* height: 80vh; */
+        align-items: center;
+        margin-top: 80px;
+    }
+
+    .details {
+        display: flex;
+        flex-direction: column;
+        /* gap: 18px; */
+        align-self: flex-start;
+        margin-top: 5px;
+    }
+
+    .heading {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .heading>h1 {
+        color: #E50914;
+    }
+
+    .heading>p {
+        color: black;
+        background-color: green;
+        border-radius: 4px;
+        padding: 8px 16px;
+        height: 39px;
+    }
+
+    .detail {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .detail>p:last-child {
+        color: black;
+        font-size: 14px;
+    }
+
+    .sorry {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .sorry>img {
+        width: 700px;
+    }
+
+    #movie {
+        color: black;
+    }
+
+
+    .root {
+        height: 100vh;
+    }
+</style>
+
+<body>
+    <div class="root">
+        <header>
+            <div onclick="renderMovies()" class="header-left">MOVIE</div>
+            <div class="header-right">
+                <input type="text" id="movie" placeholder="Enter Movie Name" />
+                <button type="submit" onclick="makeReq()">Search movie</button>
+            </div>
+        </header>
+
+        <div class="main">
+        </div>
+    </div>
+
+    <script>
+
+
+        const mainContEl = document.querySelector(".main");
+
+        function renderMovies() {
+            mainContEl.innerHTML = "";
+
+            const carouselImagesArray = [
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/700/-/0/23/23/49e233f0f51d11eb8f9dab1294f1ab24_1628081006721_l_medium.jpg",
+
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/1300/-/0/1/16/cf4aa610ea3d11e7ba4283afdd11d221_1583414120309_tv_high.jpg",
+
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/1300/-/0/84/28/8a0da4d074c811e688d58522ba040c22_1605256155604_tv_high.jpg",
+
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/700/-/0/85/62/9ecfc2b0f64e11ebbb82af1587657b0c_1629530064302_l_medium.jpg",
+
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/700/-/0/71/41/d867fd80e60911eb80c60512ab0f5ee2_1626423525626_l_medium.jpg",
+
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/1300/-/0/90/22/0_h2qbu9h3_1588954577717_tv_high.jpg",
+
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/1300/-/0/96/52/b0cc98c0a77911e89dcf97b2983a7604_1535180169191_tv_high.jpg",
+
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/700/-/0/4/73/860bb300fe2911eb88d2c72e8bd702ea_1629529906002_l_medium.jpg",
+
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/700/-/0/6/6/bb925550f19611ebb37c6d335b040efa_1629529984587_l_medium.jpg",
+
+                "https://jiocinemaweb.cdn.jio.com/jioimages.cdn.jio.com/content/entry/dynamiccontent/thumbs/700/-/0/23/23/49e233f0f51d11eb8f9dab1294f1ab24_1628081006721_l_medium.jpg",
+            ];
+
+            const rootDivElement = document.querySelector(".root");
+            const carouselParentElement = document.createElement("div");
+            carouselParentElement.className = "carousel-parent";
+
+            const carouselContainerElement = document.createElement("div");
+            carouselContainerElement.className = "carousel-container";
+
+            for (let i = 0; i < carouselImagesArray.length; i++) {
+                const imageElement = document.createElement("img");
+                imageElement.className = "carousel-item";
+                imageElement.src = carouselImagesArray[i];
+
+                carouselContainerElement.appendChild(imageElement);
+            }
+
+            carouselParentElement.appendChild(carouselContainerElement);
+
+            mainContEl.appendChild(carouselParentElement);
+
+            const carouselItemElements = document.querySelectorAll(".carousel-item");
+
+            let currentItem = 0;
+
+            function onInterval() {
+                currentItem++;
+
+                carouselContainerElement.style.transitionDuration = "0.5s";
+
+                carouselContainerElement.style.transform = `translateX(-${currentItem * 100
+                    }%)`;
+
+                if (currentItem === carouselItemElements.length - 1) {
+                    currentItem = -1;
+                }
+            }
+
+            let interval = setInterval(onInterval, 4000);
+
+            carouselContainerElement.addEventListener("transitionend", function () {
+                if (currentItem === -1) {
+                    carouselContainerElement.style.transitionDuration = "0s";
+                    carouselContainerElement.style.transform = `translateX(0)`;
+                    clearInterval(interval);
+                    currentItem = 0;
+                    interval = setInterval(onInterval, 2000);
+                }
+            });
+
+
+            const moviesContainerDivElement = document.createElement("div");
+            moviesContainerDivElement.className = "movies-container";
+
+            moviesData.forEach(function (movie) {
+                const movieDivElement = document.createElement("div");
+                movieDivElement.className = "movie";
+
+                const imageElement = document.createElement("img");
+                imageElement.src = movie.poster;
+
+                const movieNameElement = document.createElement("p");
+                movieNameElement.textContent = movie.name;
+
+                const rating = document.createElement("p");
+                rating.textContent = "IMDb rating - " + movie.IMDb_rating;
+                rating.className = "rating";
+
+                movieDivElement.appendChild(imageElement);
+                movieDivElement.appendChild(movieNameElement);
+                movieDivElement.appendChild(rating);
+
+                moviesContainerDivElement.appendChild(movieDivElement);
+            });
+
+            mainContEl.appendChild(moviesContainerDivElement);
+        }
+
+        renderMovies();
+
+        async function makeReq() {
+            const movieTitle = document.querySelector("#movie").value;
+
+            if (movieTitle === "") {
+                alert("Please enter a movie name");
+                return;
+            }
+
+            let response = await fetch(
+                `http://www.omdbapi.com/?t=${movieTitle}&apikey=b024b32d`
+            );
+
+            let data = await response.json();
+
+            console.log("datausingInput:", data);
+
+
+
+            if (data.Response === "True") {
+                mainContEl.innerHTML = "";
+                const resultDivEl = document.createElement("div");
+                resultDivEl.className = "result";
+
+                const posterDiv = document.createElement("div");
+                posterDiv.className = "poster";
+
+                const imgEl = document.createElement("img");
+                imgEl.src = data.Poster;
+
+                posterDiv.appendChild(imgEl);
+
+                const detailsDivEl = document.createElement("div");
+                detailsDivEl.className = "details";
+
+                const headingEl = document.createElement("div");
+                headingEl.className = "heading";
+
+                const title = document.createElement("h1");
+                title.textContent = data.Title;
+
+                headingEl.appendChild(title);
+
+                if (Number(data.imdbRating) > 8.7) {
+                    const reccomendedEl = document.createElement("p");
+                    reccomendedEl.textContent = "Recommended";
+                    headingEl.appendChild(reccomendedEl);
+                }
+
+                const detailDivOne = document.createElement("div");
+                detailDivOne.className = "detail";
+
+                const genreEl = document.createElement("p");
+                genreEl.textContent = "Genre";
+
+                const genre = document.createElement("p");
+                genre.textContent = data.Genre;
+
+                detailDivOne.appendChild(genreEl);
+                detailDivOne.appendChild(genre);
+
+                const detailDivTwo = document.createElement("div");
+                detailDivTwo.className = "detail";
+
+                const directorEl = document.createElement("p");
+                directorEl.textContent = "Director";
+
+                const director = document.createElement("p");
+                director.textContent = data.Director;
+
+                detailDivTwo.appendChild(directorEl);
+                detailDivTwo.appendChild(director);
+
+                const detailDivThree = document.createElement("div");
+                detailDivThree.className = "detail";
+
+                const actorsEl = document.createElement("p");
+                actorsEl.textContent = "Actors";
+
+                const actors = document.createElement("p");
+                actors.textContent = data.Actors;
+
+                detailDivThree.appendChild(actorsEl);
+                detailDivThree.appendChild(actors);
+
+                const detailDivFour = document.createElement("div");
+                detailDivFour.className = "detail";
+
+                const imbdEl = document.createElement("p");
+                imbdEl.textContent = "IMDb rating";
+
+                const imbd = document.createElement("p");
+                imbd.textContent = data.imdbRating;
+
+                detailDivFour.appendChild(imbdEl);
+                detailDivFour.appendChild(imbd);
+
+                const detailDivFive = document.createElement("div");
+                detailDivFive.className = "detail";
+
+                const languageEl = document.createElement("p");
+                languageEl.textContent = "Languages";
+
+                const language = document.createElement("p");
+                language.textContent = data.Language;
+
+                detailDivFive.appendChild(languageEl);
+                detailDivFive.appendChild(language);
+
+                const detailDivSix = document.createElement("div");
+                detailDivSix.className = "detail";
+
+                const storyEl = document.createElement("p");
+                storyEl.textContent = "Story";
+
+                const story = document.createElement("p");
+                story.textContent = data.Plot;
+
+                detailDivSix.appendChild(storyEl);
+                detailDivSix.appendChild(story);
+
+                detailsDivEl.appendChild(headingEl);
+                detailsDivEl.appendChild(detailDivOne);
+                detailsDivEl.appendChild(detailDivTwo);
+                detailsDivEl.appendChild(detailDivThree);
+                detailsDivEl.appendChild(detailDivFour);
+                detailsDivEl.appendChild(detailDivFive);
+                detailsDivEl.appendChild(detailDivSix);
+
+                resultDivEl.appendChild(posterDiv);
+                resultDivEl.appendChild(detailsDivEl);
+
+                mainContEl.appendChild(resultDivEl);
+            } else {
+                mainContEl.innerHTML = "";
+                const sorryDiv = document.createElement("div");
+                sorryDiv.className = "sorry";
+
+                const msgEl = document.createElement("h1");
+                msgEl.textContent = "Sorry! No movie found";
+
+                const imgEl = document.createElement("img");
+                imgEl.src = "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2018_40/2593976/181005-stock-sorry-sign-ew-1147a.jpg";
+
+                sorryDiv.appendChild(msgEl);
+                sorryDiv.appendChild(imgEl);
+
+                mainContEl.appendChild(sorryDiv);
+            }
+        }</script>
+</body>
+
+</html>
